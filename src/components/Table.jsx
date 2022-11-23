@@ -1,13 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function Table() {
-  const { fetchPlanets, planets } = useContext(AppContext);
-  useEffect(() => {
-    fetchPlanets();
-    console.log(planets);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { filteredPlanets } = useContext(AppContext);
 
   return (
     <div className="table-component">
@@ -31,7 +26,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {planets.results?.map((planet) => (
+          {filteredPlanets?.map((planet) => ( // resultado do filtro tem q vir pra ca // length > 0
             <tr key={ planet.name }>
               <td>{planet.name}</td>
               <td>{planet.rotation_period}</td>

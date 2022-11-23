@@ -2,7 +2,7 @@
 import React from 'react';
 
 function Header() {
-  // const planets = useContext(StarWarsContext);
+  // const planets = useContext(AppContext);
 
   return (
     <header>
