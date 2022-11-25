@@ -6,6 +6,11 @@ function AppProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filteredPlanets, setFiltered] = useState([]);
+  const [selected, setSelected] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
+  });
 
   useEffect(() => {
     const fetchPlanets = async () => {
@@ -15,6 +20,7 @@ function AppProvider({ children }) {
         const planetsAPI = await response.json();
         planetsAPI.results
           .map((planet) => delete planet.residents);
+        console.log('planets API', planetsAPI.results);
         setPlanets(planetsAPI.results);
       } catch (error) {
         console.log(error);
@@ -27,6 +33,7 @@ function AppProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    console.log('planets', planets);
     setFiltered(planets);
   }, [planets]); // planets não varia, então não vai chamar novamente?!...
 
@@ -36,7 +43,9 @@ function AppProvider({ children }) {
     isLoading,
     filteredPlanets,
     setFiltered,
-  }), [isLoading, planets, filteredPlanets]);
+    selected,
+    setSelected,
+  }), [isLoading, planets, filteredPlanets, selected]);
 
   return (
     <AppContext.Provider value={ values }>
