@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 function FilterNum() {
-  const { setFiltered, planets, filteredPlanets,
+  const { setFiltered, filteredPlanets,
     selectedFilters, setSelectedFilters } = useContext(AppContext);
   const [selected, setSelected] = useState({
     column: 'population',
@@ -25,26 +25,22 @@ function FilterNum() {
   };
 
   const handleMultipleFilters = (allFilters) => {
-    let planetsFiltered = planets;
     allFilters.forEach((filter) => {
-      planetsFiltered = planetsFiltered.filter((planet) => {
+      const planetsFiltered = filteredPlanets.filter((planet) => {
         const { comparison, column, value } = filter;
         if (comparison === 'maior que') {
-          return (planet[column] !== 'unknown'
-          && Number(planet[column]) > Number(value));
+          return Number(planet[column]) > Number(value);
         }
         if (comparison === 'menor que') {
-          return (planet[column] !== 'unknown'
-          && Number(planet[column]) < Number(value));
+          return Number(planet[column]) < Number(value);
         }
         if (comparison === 'igual a') {
-          return (planet[column] !== 'unknown'
-          && Number(planet[column]) === Number(value));
+          return Number(planet[column]) === Number(value);
         }
         return false;
       });
+      setFiltered(planetsFiltered);
     });
-    setFiltered(planetsFiltered);
   };
 
   const saveSelectedFilters = () => {
