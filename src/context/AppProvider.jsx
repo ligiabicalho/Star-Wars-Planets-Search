@@ -7,6 +7,13 @@ function AppProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const [filteredPlanets, setFiltered] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState([]);
+  const [filterOptions, setfilterOptions] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   useEffect(() => {
     const fetchPlanets = async () => {
@@ -36,7 +43,9 @@ function AppProvider({ children }) {
     setFiltered,
     selectedFilters,
     setSelectedFilters,
-  }), [isLoading, planets, filteredPlanets, selectedFilters]);
+    filterOptions,
+    setfilterOptions,
+  }), [isLoading, planets, filteredPlanets, selectedFilters, filterOptions]);
 
   return (
     <AppContext.Provider value={ values }>

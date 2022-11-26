@@ -2,8 +2,9 @@ import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 function FilterNum() {
-  const { setFiltered, filteredPlanets,
-    selectedFilters, setSelectedFilters } = useContext(AppContext);
+  const { filteredPlanets, setFiltered,
+    selectedFilters, setSelectedFilters,
+    filterOptions, setfilterOptions } = useContext(AppContext);
   const [selected, setSelected] = useState({
     column: 'population',
     comparison: 'maior que',
@@ -47,6 +48,8 @@ function FilterNum() {
     const allFilters = [...selectedFilters, selected];
     setSelectedFilters(allFilters);
     handleMultipleFilters(allFilters);
+    const newFilterOptions = filterOptions.filter((filter) => selected.column !== filter);
+    setfilterOptions(newFilterOptions);
     setSelected({
       column: 'population',
       comparison: 'maior que',
@@ -63,11 +66,9 @@ function FilterNum() {
           value={ selected.column }
           onChange={ handleSelected }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {filterOptions.map((filter) => (
+            <option key={ filter } value={ filter }>{filter}</option>
+          ))}
         </select>
         <select
           name="comparison"
