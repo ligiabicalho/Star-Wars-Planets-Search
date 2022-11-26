@@ -1,57 +1,49 @@
 import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
+import SelectedFilter from './SelectedFilter';
 
 function FilterNum() {
-  const { filteredPlanets, setFiltered,
+  const { handleMultipleFilters,
+    // filteredPlanets, setFiltered,
     selectedFilters, setSelectedFilters,
-    filterOptions, setfilterOptions } = useContext(AppContext);
+    filterOptions, setFilterOptions } = useContext(AppContext);
   const [selected, setSelected] = useState({
-    column: 'population',
+    column: filterOptions[0],
     comparison: 'maior que',
     value: 0,
   });
-
-  const renderSelectedFilters = selectedFilters.map((filter, i) => (
-    <div className="selectedFilters" key={ i }>
-      <p>
-        {filter.column}
-        {filter.comparison}
-        {filter.value}
-      </p>
-    </div>
-  ));
 
   const handleSelected = ({ target }) => {
     setSelected((prevSelect) => ({ ...prevSelect, [target.name]: target.value }));
   };
 
-  const handleMultipleFilters = (allFilters) => {
-    allFilters.forEach((filter) => {
-      const planetsFiltered = filteredPlanets.filter((planet) => {
-        const { comparison, column, value } = filter;
-        if (comparison === 'maior que') {
-          return Number(planet[column]) > Number(value);
-        }
-        if (comparison === 'menor que') {
-          return Number(planet[column]) < Number(value);
-        }
-        if (comparison === 'igual a') {
-          return Number(planet[column]) === Number(value);
-        }
-        return false;
-      });
-      setFiltered(planetsFiltered);
-    });
-  };
+  // const handleMultipleFilters = (allFilters) => {
+  //   allFilters.forEach((filter) => {
+  //     const planetsFiltered = filteredPlanets.filter((planet) => {
+  //       const { comparison, column, value } = filter;
+  //       if (comparison === 'maior que') {
+  //         return Number(planet[column]) > Number(value);
+  //       }
+  //       if (comparison === 'menor que') {
+  //         return Number(planet[column]) < Number(value);
+  //       }
+  //       if (comparison === 'igual a') {
+  //         return Number(planet[column]) === Number(value);
+  //       }
+  //       return false;
+  //     });
+  //     setFiltered(planetsFiltered);
+  //   });
+  // };
 
   const saveSelectedFilters = () => {
     const allFilters = [...selectedFilters, selected];
-    setSelectedFilters(allFilters);
+    setSelectedFilters(allFilters); // armazena os filtros selecionados
     handleMultipleFilters(allFilters);
     const newFilterOptions = filterOptions.filter((filter) => selected.column !== filter);
-    setfilterOptions(newFilterOptions);
-    setSelected({
-      column: 'population',
+    setFilterOptions(newFilterOptions); // modifica a lista de options q está sendo renderizada
+    setSelected({ // limpa os valores iniciais do filtro
+      column: newFilterOptions[0],
       comparison: 'maior que',
       value: 0,
     });
@@ -95,7 +87,7 @@ function FilterNum() {
           Filtrar
         </button>
       </form>
-      { renderSelectedFilters }
+      <SelectedFilter />
     </div>
 
   );

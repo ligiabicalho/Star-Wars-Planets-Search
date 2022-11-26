@@ -7,7 +7,7 @@ function AppProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const [filteredPlanets, setFiltered] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState([]);
-  const [filterOptions, setfilterOptions] = useState([
+  const [filterOptions, setFilterOptions] = useState([
     'population',
     'orbital_period',
     'diameter',
@@ -35,7 +35,27 @@ function AppProvider({ children }) {
     fetchPlanets();
   }, []);
 
-  const values = useMemo(() => ({
+  const handleMultipleFilters = (allFilters) => {
+    let newPlanetsFiltered = planets;
+    allFilters.forEach((filter) => {
+      newPlanetsFiltered = newPlanetsFiltered.filter((planet) => {
+        const { comparison, column, value } = filter;
+        if (comparison === 'maior que') {
+          return Number(planet[column]) > Number(value);
+        }
+        if (comparison === 'menor que') {
+          return Number(planet[column]) < Number(value);
+        }
+        if (comparison === 'igual a') {
+          return Number(planet[column]) === Number(value);
+        }
+        return false;
+      });
+      setFiltered(newPlanetsFiltered);
+    });
+  };
+
+  const values = {
     planets,
     setPlanets,
     isLoading,
@@ -44,8 +64,9 @@ function AppProvider({ children }) {
     selectedFilters,
     setSelectedFilters,
     filterOptions,
-    setfilterOptions,
-  }), [isLoading, planets, filteredPlanets, selectedFilters, filterOptions]);
+    setFilterOptions,
+    handleMultipleFilters,
+  };
 
   return (
     <AppContext.Provider value={ values }>
