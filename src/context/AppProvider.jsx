@@ -1,19 +1,24 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AppContext from './AppContext';
 
 function AppProvider({ children }) {
-  const [planets, setPlanets] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [filteredPlanets, setFiltered] = useState([]);
-  const [selectedFilters, setSelectedFilters] = useState([]);
-  const [filterOptions, setFilterOptions] = useState([
+  const [planets, setPlanets] = useState([]); // recebe dados da API
+  const [isLoading, setIsLoading] = useState(true); // não está sendo usado
+  const [filteredPlanets, setFiltered] = useState([]); // renderiza os planetas, filtrados ou não.
+  const [filterOptions, setFilterOptions] = useState([ // renderiza lista de opções dos filtros
     'population',
     'orbital_period',
     'diameter',
     'rotation_period',
     'surface_water',
   ]);
+  const [selected, setSelected] = useState({ // filtro selecionado
+    column: filterOptions[0],
+    comparison: 'maior que',
+    value: 0,
+  });
+  const [selectedFilters, setSelectedFilters] = useState([]); // acumula os filtros
 
   useEffect(() => {
     const fetchPlanets = async () => {
@@ -61,6 +66,8 @@ function AppProvider({ children }) {
     isLoading,
     filteredPlanets,
     setFiltered,
+    selected,
+    setSelected,
     selectedFilters,
     setSelectedFilters,
     filterOptions,

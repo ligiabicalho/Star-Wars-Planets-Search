@@ -1,10 +1,11 @@
 import React from 'react';
 import './App.css';
+import AppProvider from './context/AppProvider';
 import Header from './components/Header';
 import Table from './components/Table';
 import FilterName from './components/FilterName';
 import FilterNum from './components/FilterNum';
-import AppProvider from './context/AppProvider';
+import FilterOrder from './components/FilterOrder';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Header />
       <FilterName />
       <FilterNum />
+      <FilterOrder />
       <Table />
     </AppProvider>
   );

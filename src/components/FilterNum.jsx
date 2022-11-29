@@ -1,52 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 import SelectedFilter from './SelectedFilter';
+import Button from './Button';
 
 function FilterNum() {
-  const { handleMultipleFilters,
-    // filteredPlanets, setFiltered,
-    selectedFilters, setSelectedFilters,
-    filterOptions, setFilterOptions } = useContext(AppContext);
-  const [selected, setSelected] = useState({
-    column: filterOptions[0],
-    comparison: 'maior que',
-    value: 0,
-  });
+  const { filterOptions, selected, setSelected } = useContext(AppContext);
 
   const handleSelected = ({ target }) => {
-    setSelected((prevSelect) => ({ ...prevSelect, [target.name]: target.value }));
-  };
-
-  // const handleMultipleFilters = (allFilters) => {
-  //   allFilters.forEach((filter) => {
-  //     const planetsFiltered = filteredPlanets.filter((planet) => {
-  //       const { comparison, column, value } = filter;
-  //       if (comparison === 'maior que') {
-  //         return Number(planet[column]) > Number(value);
-  //       }
-  //       if (comparison === 'menor que') {
-  //         return Number(planet[column]) < Number(value);
-  //       }
-  //       if (comparison === 'igual a') {
-  //         return Number(planet[column]) === Number(value);
-  //       }
-  //       return false;
-  //     });
-  //     setFiltered(planetsFiltered);
-  //   });
-  // };
-
-  const saveSelectedFilters = () => {
-    const allFilters = [...selectedFilters, selected];
-    setSelectedFilters(allFilters); // armazena os filtros selecionados
-    handleMultipleFilters(allFilters);
-    const newFilterOptions = filterOptions.filter((filter) => selected.column !== filter);
-    setFilterOptions(newFilterOptions); // modifica a lista de options q está sendo renderizada
-    setSelected({ // limpa os valores iniciais do filtro
-      column: newFilterOptions[0],
-      comparison: 'maior que',
-      value: 0,
-    });
+    setSelected((prevSelected) => ({ ...prevSelected, [target.name]: target.value }));
   };
 
   return (
@@ -74,18 +35,13 @@ function FilterNum() {
         </select>
         <input
           name="value"
+          type="number"
           data-testid="value-filter"
           value={ selected.value }
           onChange={ handleSelected }
           placeholder="valor"
         />
-        <button
-          type="button"
-          data-testid="button-filter"
-          onClick={ saveSelectedFilters }
-        >
-          Filtrar
-        </button>
+        <Button name="Filtrar" testid="button-filter" />
       </form>
       <SelectedFilter />
     </div>

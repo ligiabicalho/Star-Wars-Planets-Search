@@ -14,7 +14,7 @@ function FilterName() {
   };
 
   return (
-    <div className="filterName">
+    <div className="FilterName">
       <form>
         <label htmlFor="nameFilter">
           <input
