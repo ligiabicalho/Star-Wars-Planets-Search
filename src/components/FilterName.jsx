@@ -15,18 +15,16 @@ function FilterName() {
 
   return (
     <div className="FilterName">
-      <form>
-        <label htmlFor="nameFilter">
-          <input
-            type="text"
-            name="name"
-            placeholder="buscar por nome"
-            data-testid="name-filter"
-            // value={} o onChange já altera o estado e assiona o filtro.
-            onChange={ handleFilterName }
-          />
-        </label>
-      </form>
+      <label htmlFor="nameFilter">
+        <input
+          type="search"
+          name="name"
+          placeholder="buscar por nome"
+          data-testid="name-filter"
+          // value={} o onChange já altera o estado e assiona o filtro.
+          onChange={ handleFilterName }
+        />
+      </label>
     </div>
 
   );

@@ -31,47 +31,45 @@ function FilterOrder() {
 
   return (
     <div className="filterOrder">
-      <form>
-        <select
-          name="column"
-          data-testid="column-sort"
-          value={ order.column }
+      <select
+        name="column"
+        data-testid="column-sort"
+        value={ order.column }
+        onChange={ handleOrder }
+      >
+        <option value="population">population</option>
+        <option value="orbital_period">orbital_period</option>
+        <option value="diameter">diameter</option>
+        <option value="rotation_period">rotation_period</option>
+        <option value="surface_water">surface_water</option>
+      </select>
+      <label htmlFor="asc">
+        <input
+          name="sort"
+          id="asc"
+          type="radio"
+          value="ASC"
+          data-testid="column-sort-input-asc"
           onChange={ handleOrder }
-        >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
-        </select>
-        <label htmlFor="asc">
-          <input
-            name="sort"
-            id="asc"
-            type="radio"
-            value="ASC"
-            data-testid="column-sort-input-asc"
-            onChange={ handleOrder }
-          />
-          Ascendente
-        </label>
-        <label htmlFor="desc">
-          <input
-            name="sort"
-            id="desc"
-            type="radio"
-            value="DESC"
-            data-testid="column-sort-input-desc"
-            onChange={ handleOrder }
-          />
-          Descendente
-        </label>
-        <Button
-          name="Ordenar"
-          testid="column-sort-button"
-          onclick={ handleSortColumns }
         />
-      </form>
+        Ascendente
+      </label>
+      <label htmlFor="desc">
+        <input
+          name="sort"
+          id="desc"
+          type="radio"
+          value="DESC"
+          data-testid="column-sort-input-desc"
+          onChange={ handleOrder }
+        />
+        Descendente
+      </label>
+      <Button
+        name="Ordenar"
+        testid="column-sort-button"
+        onclick={ handleSortColumns }
+      />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import AppProvider from './context/AppProvider';
+
 import Header from './components/Header';
 import Table from './components/Table';
 import FilterName from './components/FilterName';
@@ -9,13 +9,15 @@ import FilterOrder from './components/FilterOrder';
 
 function App() {
   return (
-    <AppProvider>
+    <div className="app">
       <Header />
-      <FilterName />
-      <FilterNum />
-      <FilterOrder />
+      <form>
+        <FilterName />
+        <FilterNum />
+        <FilterOrder />
+      </form>
       <Table />
-    </AppProvider>
+    </div>
   );
 }
 
