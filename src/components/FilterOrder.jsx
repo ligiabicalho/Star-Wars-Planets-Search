@@ -1,29 +1,13 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 import Button from './Button';
 
 function FilterOrder() {
-  const { filteredPlanets, setFiltered } = useContext(AppContext);
+  const { handleSortColumns } = useContext(AppContext);
   const [order, setOrder] = useState({
     column: 'population',
     sort: 'ASC',
   });
-
-  const handleSortColumns = () => {
-    const { column, sort } = order;
-    if (sort === 'ASC') {
-      console.log(column);
-      console.log(filteredPlanets);
-      console.log(filteredPlanets[column]);
-      const orderPlanets = filteredPlanets[column].sort((a, b) => a - b);
-      return orderPlanets;
-    }
-    if (sort === 'DESC') {
-      const orderPlanets = filteredPlanets[column].sort((a, b) => b - a);
-      return orderPlanets;
-    }
-    setFiltered(orderPlanets);
-  };
 
   const handleOrder = ({ target }) => {
     setOrder((prevOrder) => ({ ...prevOrder, [target.name]: target.value }));
@@ -59,7 +43,7 @@ function FilterOrder() {
           name="sort"
           id="desc"
           type="radio"
-          value="DESC"
+          value="DSC"
           data-testid="column-sort-input-desc"
           onChange={ handleOrder }
         />
@@ -68,7 +52,7 @@ function FilterOrder() {
       <Button
         name="Ordenar"
         testid="column-sort-button"
-        onclick={ handleSortColumns }
+        onclick={ () => handleSortColumns(order) }
       />
     </div>
   );

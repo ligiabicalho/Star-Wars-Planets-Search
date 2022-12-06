@@ -4,7 +4,6 @@ import AppContext from './AppContext';
 
 function AppProvider({ children }) {
   const [planets, setPlanets] = useState([]); // recebe dados da API
-  const [isLoading, setIsLoading] = useState(true); // não está sendo usado
   const [filteredPlanets, setFiltered] = useState([]); // renderiza os planetas, filtrados ou não.
   const [filterOptions, setFilterOptions] = useState([ // renderiza lista de opções dos filtros
     'population',
@@ -32,13 +31,33 @@ function AppProvider({ children }) {
         setFiltered(planetsAPI.results);
       } catch (error) {
         console.log(error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
     fetchPlanets();
   }, []);
+
+  useEffect(() => {
+    setFiltered(filteredPlanets);
+  }, [filteredPlanets]);
+
+  // Lógica finalizada com auxílio do colega Jaider Nunes
+  const handleSortColumns = ({ column, sort }) => {
+    const unknowns = filteredPlanets.filter((planet) => planet[column] === 'unknown');
+    const knows = filteredPlanets.filter((planet) => planet[column] !== 'unknown');
+    knows.sort((a, b) => {
+      if (sort === 'ASC') {
+        console.log('if asc', sort);
+        return a[column] - b[column];
+      }
+      if (sort === 'DSC') {
+        console.log('if dsc', sort);
+        return b[column] - a[column];
+      }
+      return false;
+    });
+    setFiltered([...knows, ...unknowns]);
+  };
 
   const handleMultipleFilters = (allFilters) => {
     let newPlanetsFiltered = planets;
@@ -62,8 +81,6 @@ function AppProvider({ children }) {
 
   const values = {
     planets,
-    setPlanets,
-    isLoading,
     filteredPlanets,
     setFiltered,
     selected,
@@ -73,6 +90,7 @@ function AppProvider({ children }) {
     filterOptions,
     setFilterOptions,
     handleMultipleFilters,
+    handleSortColumns,
   };
 
   return (

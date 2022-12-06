@@ -105,7 +105,7 @@ describe('Teste a aplicação Star Wars Search Planets', () => {
     // await waitFor(() => expect(rowsResult).toHaveLength(3));
 
   })
-  it('Verifica a filtragem por coluna de valor numérico', async () => {
+  it('Verifica a filtragem por coluna de valor numérico e se é possível apagar apenas um filtro', async () => {
     render(<AppProvider> <App /></AppProvider >);
     const selectColumns = screen.getAllByRole('combobox');
     const inputNum = screen.getByRole('spinbutton');
@@ -127,7 +127,7 @@ describe('Teste a aplicação Star Wars Search Planets', () => {
     expect(selectedFilter).not.toBeInTheDocument();
 
   })
-  it('Verifica a filtragem por mais de um parâmetro numérico', () => {
+  it('Verifica a filtragem por mais de um parâmetro numérico e se é possível apagar todos', () => {
     render(<AppProvider> <App /></AppProvider >);
     const selectColumns = screen.getAllByRole('combobox');
     const inputNum = screen.getByRole('spinbutton');
@@ -152,10 +152,15 @@ describe('Teste a aplicação Star Wars Search Planets', () => {
     expect(deletedFilters).not.toBeInTheDocument();
 
   })
-  it.skip('Verifica', () => {
+  it('Verifica o filtro para ordernar ascendente/descendente', () => {
     render(<AppProvider> <App /></AppProvider >);
-    const a = screen.getByRole();
-    expect(a).toBeInTheDocument();
+    const selectsColumns = screen.getAllByRole('combobox');
+    const radioOptionDSC = screen.getByRole('radio', { name: 'Descendente' });
+    const orderBtn = screen.getByRole('button', { name: 'Ordenar' });
+    userEvent.selectOptions(selectsColumns[2], ['diameter']);
+    userEvent.click(radioOptionDSC);
+    // userEvent.click(orderBtn);
+    // expect()
   })
   it.skip('Verifica', () => {
     render(<AppProvider> <App /></AppProvider >);
