@@ -66,7 +66,7 @@ describe('Teste a aplicação Star Wars Search Planets', () => {
     expect(global.fetch).toHaveBeenCalledTimes(1);
     expect(global.fetch).toHaveBeenCalledWith('https://swapi.dev/api/planets');
   })
-  it('Verifica se tem elementos para buscar por texto, filtro de colunas numéricas, ordenação e respectivos botoes', () => {
+  it('Verifica se tem elementos para buscar por texto, filtro de colunas numéricas, ordenação e respectivos botões', () => {
     render(<AppProvider> <App /></AppProvider >);
     const inputText = screen.getByRole('searchbox');
     const selectsColumns = screen.getAllByRole('combobox');
@@ -97,13 +97,18 @@ describe('Teste a aplicação Star Wars Search Planets', () => {
     render(<AppProvider> <App /></AppProvider >);
     expect(global.fetch).toHaveBeenCalled();
     const inputSearch = screen.getByRole('searchbox');
-    userEvent.type(inputSearch, '');
-    userEvent.type(inputSearch, 't');
-    expect(inputSearch).toHaveValue('t');
+    const alderaan = await screen.findByRole('cell', { name: /alderaan/i });
+    expect(alderaan).toBeInTheDocument();
 
-    const rowsResult = await screen.findAllByRole('row');
-    // await waitFor(() => expect(rowsResult).toHaveLength(3));
+    userEvent.type(inputSearch, 'oo');
+    expect(inputSearch).toHaveValue('oo');
 
+    const searchResult = await screen.findAllByTestId(PLANET_NAME);
+    waitFor(() => expect(searchResult).toHaveLength(2));
+
+    const naboo = await screen.findByRole('cell', { name: /naboo/i });
+    expect(naboo).toBeInTheDocument();
+    expect(alderaan).not.toBeInTheDocument();
   })
   it('Verifica a filtragem por coluna de valor numérico e se é possível apagar apenas um filtro', async () => {
     render(<AppProvider> <App /></AppProvider >);
@@ -111,16 +116,23 @@ describe('Teste a aplicação Star Wars Search Planets', () => {
     const inputNum = screen.getByRole('spinbutton');
     const filterBtn = screen.getByRole('button', { name: 'Filtrar' });
 
-    userEvent.selectOptions(selectColumns[0], ['rotation_period']);
-    userEvent.selectOptions(selectColumns[1], ['igual a']);
+    userEvent.selectOptions(selectColumns[0], 'rotation_period');
+    userEvent.selectOptions(selectColumns[1], 'igual a');
     userEvent.type(inputNum, '24');
     userEvent.click(filterBtn);
 
-    // const searchResult = await screen.findAllByTestId(PLANET_NAME);
-    // await waitFor(() => expect(searchResult).toHaveLength(2));
+    const searchResult = await screen.findAllByTestId(PLANET_NAME);
+    waitFor(() => expect(searchResult).toHaveLength(3));
 
     const selectedFilter = screen.getByTestId('filter');
     expect(selectedFilter).toHaveTextContent('rotation_period');
+
+    const alderaan = await screen.findByRole('cell', { name: /alderaan/i });
+    expect(alderaan).toBeInTheDocument();
+
+    const naboo = await screen.findByRole('cell', { name: /naboo/i });
+    expect(naboo).not.toBeInTheDocument();
+
 
     const btnDelete = screen.getByRole('button', { name: 'X' });
     userEvent.click(btnDelete);

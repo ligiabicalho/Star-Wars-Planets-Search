@@ -37,10 +37,6 @@ function AppProvider({ children }) {
     fetchPlanets();
   }, []);
 
-  useEffect(() => {
-    setFiltered(filteredPlanets);
-  }, [filteredPlanets]);
-
   // Lógica finalizada com auxílio do colega Jaider Nunes
   const handleSortColumns = ({ column, sort }) => {
     const unknowns = filteredPlanets.filter((planet) => planet[column] === 'unknown');
